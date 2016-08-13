@@ -1,4 +1,4 @@
-package com.spring.web.demo.api.auth;
+package com.spring.web.demo.api.filter;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;

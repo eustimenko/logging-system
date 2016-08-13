@@ -1,6 +1,6 @@
 package com.spring.web.demo.api;
 
-import com.spring.web.demo.api.auth.AuthFilter;
+import com.spring.web.demo.api.filter.AuthFilter;
 import com.spring.web.demo.logic.LogicConfiguration;
 import com.spring.web.demo.persistent.PersistentConfiguration;
 import org.springframework.boot.SpringApplication;
