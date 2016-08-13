@@ -1,8 +1,9 @@
 package com.spring.web.demo.logic.service;
 
 import com.spring.web.demo.persistent.entity.Product;
+import org.springframework.data.domain.Page;
 
-import java.util.*;
+import java.util.NoSuchElementException;
 
 public interface ProductService {
 
@@ -12,7 +13,7 @@ public interface ProductService {
 
     void delete(Long id);
 
-    List<Product> list();
+    Page<Product> list(Integer pageNumber);
 
-    List<Product> listByFilter(Product filter);
+    Page<Product> listByFilter(Product filter, Integer pageNumber);
 }

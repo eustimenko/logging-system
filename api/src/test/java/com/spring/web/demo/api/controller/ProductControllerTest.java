@@ -1,5 +1,6 @@
 package com.spring.web.demo.api.controller;
 
+import com.spring.web.demo.logic.service.DefaultProductService;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +33,10 @@ public class ProductControllerTest {
 
     @Test
     public void list() throws Exception {
-        mvc.perform(get("/api/product"))
+        mvc.perform(get("/api/product")
+                .param("page", "1"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(2)));
+                .andExpect(jsonPath("$", hasSize(DefaultProductService.DEFAULT_PAGE_SIZE)));
 
     }
 
@@ -70,8 +72,9 @@ public class ProductControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content("{\"sku\":\"sku\"}".getBytes()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$.[0].title", is("iPhone 5s")));
+                .andExpect(jsonPath("$", hasSize(DefaultProductService.DEFAULT_PAGE_SIZE)))
+                .andExpect(jsonPath("$.[0].title", is("iPhone 6")))
+                .andExpect(jsonPath("$.[0].sku", is("111-234-567-8900")));
     }
 
 }

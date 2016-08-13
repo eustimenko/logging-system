@@ -3,6 +3,7 @@ package com.spring.web.demo.logic.service;
 import com.spring.web.demo.logic.mock.MockBuilder;
 import com.spring.web.demo.persistent.entity.Product;
 import com.spring.web.demo.persistent.repository.ProductRepository;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +15,8 @@ import static org.mockito.Mockito.mock;
 @Service
 @Transactional
 public class DefaultProductService implements ProductService {
+
+    public static final int DEFAULT_PAGE_SIZE = 20;
 
 //    Uncomment this to launch application with production data
 //    @Autowired
@@ -41,12 +44,16 @@ public class DefaultProductService implements ProductService {
         if (product.isPresent()) repository.delete(product.get());
     }
 
-    public List<Product> list() {
-        return repository.findAll();
+    public Page<Product> list(Integer pageNumber) {
+        return repository.findAll(defaultPageRequest(pageNumber));
     }
 
-    public List<Product> listByFilter(Product filter) {
-        return repository.findByParameters(filter);
+    private PageRequest defaultPageRequest(Integer pageNumber) {
+        return new PageRequest(pageNumber - 1, DEFAULT_PAGE_SIZE, Sort.Direction.ASC, "title");
+    }
+
+    public Page<Product> listByFilter(Product filter, Integer pageNumber) {
+        return repository.findByParameters(filter, defaultPageRequest(pageNumber));
     }
 
     /**

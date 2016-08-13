@@ -1,7 +1,9 @@
 package com.spring.web.demo.logic.mock;
 
+import com.spring.web.demo.logic.service.DefaultProductService;
 import com.spring.web.demo.persistent.entity.Product;
 import com.spring.web.demo.persistent.repository.ProductRepository;
+import org.springframework.data.domain.*;
 
 import java.util.*;
 
@@ -25,8 +27,8 @@ public class MockBuilder {
         when(repository.save(any(Product.class))).thenReturn(mockExistingProduct());
         when(repository.findById(anyLong())).thenReturn(Optional.of(mockExistingProduct()));
         doNothing().when(repository).delete(anyLong());
-        when(repository.findAll()).thenReturn(mockAllProducts());
-        when(repository.findByParameters(any(Product.class))).thenReturn(Collections.singletonList(mockExistingProduct()));
+        when(repository.findAll(any(PageRequest.class))).thenReturn(mockAllProducts());
+        when(repository.findByParameters(any(Product.class), any(PageRequest.class))).thenReturn(mockAllProducts());
     }
 
     private Product mockExistingProduct() {
@@ -42,21 +44,23 @@ public class MockBuilder {
         return product;
     }
 
-    private List<Product> mockAllProducts() {
-        final Product first = mockExistingProduct();
+    private Page<Product> mockAllProducts() {
+        final List<Product> result = new ArrayList<>();
 
-        final Product second = new Product();
-        second.setId(2L);
-        second.setTitle("iPhone 6");
-        second.setSku("111-234-567-8902");
-        second.setDescription("The iPhone 6 and iPhone 6 Plus are smartphones designed and marketed by Apple Inc. " +
-                "The devices are part of the iPhone series and were announced on September 9, 2014, and released on " +
-                "September 19, 2014.[16] The iPhone 6 and iPhone 6 Plus jointly serve as successors " +
-                "to the iPhone 5c and iPhone 5s.");
+        for (long i = 0; i < DefaultProductService.DEFAULT_PAGE_SIZE; i++) {
+            final Product product = new Product();
+            product.setId(i);
+            product.setTitle("iPhone 6");
+            product.setSku("111-234-567-890" + i);
+            product.setDescription("The iPhone 6 and iPhone 6 Plus are smartphones designed and marketed by Apple Inc. " +
+                    "The devices are part of the iPhone series and were announced on September 9, 2014, and released on " +
+                    "September 19, 2014.[16] The iPhone 6 and iPhone 6 Plus jointly serve as successors " +
+                    "to the iPhone 5c and iPhone 5s.");
+            result.add(product);
+        }
 
-        return new ArrayList<Product>() {{
-            add(first);
-            add(second);
-        }};
+        return new PageImpl<>(result,
+                new PageRequest(1, DefaultProductService.DEFAULT_PAGE_SIZE, Sort.Direction.ASC, "title"),
+                result.size());
     }
 }

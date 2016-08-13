@@ -3,6 +3,7 @@ package com.spring.web.demo.api.controller;
 import com.spring.web.demo.logic.service.ProductService;
 import com.spring.web.demo.persistent.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -15,8 +16,9 @@ public class ProductController {
     private ProductService productService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<Product> list() {
-        return productService.list();
+    public List<Product> list(@RequestParam(value = "page", defaultValue = "1") Integer page) {
+        final Page<Product> products = productService.list(page);
+        return products.getContent();
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -35,7 +37,8 @@ public class ProductController {
     }
 
     @RequestMapping(value = "search", method = RequestMethod.GET)
-    public List<Product> search(@RequestBody Product filter) {
-        return productService.listByFilter(filter);
+    public List<Product> search(@RequestBody Product filter, @RequestParam(value = "page", defaultValue = "1") Integer page) {
+        final Page<Product> products = productService.listByFilter(filter, page);
+        return products.getContent();
     }
 }

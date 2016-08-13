@@ -2,6 +2,7 @@ package com.spring.web.demo.persistent.repository;
 
 import com.spring.web.demo.persistent.entity.Product;
 import org.slf4j.*;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -17,7 +18,7 @@ public class ProductRepositoryImpl implements ProductCustomRepository {
     @PersistenceContext
     private EntityManager em;
 
-    public List<Product> findByParameters(Product params) {
+    public Page<Product> findByParameters(Product params, Pageable pageable) {
         final CriteriaBuilder cb = em.getCriteriaBuilder();
         final CriteriaQuery<Product> cq = cb.createQuery(Product.class);
         final Root<Product> from = cq.from(Product.class);
@@ -29,12 +30,16 @@ public class ProductRepositoryImpl implements ProductCustomRepository {
             }
         } catch (RuntimeException e) {
             logger.error("Criteria query build error", e);
-            return Collections.emptyList();
+            return new PageImpl<>(Collections.emptyList());
         }
 
         cq.select(from);
 
-        return em.createQuery(cq).getResultList();
+        final TypedQuery<Product> query = em.createQuery(cq);
+        query.setFirstResult((pageable.getPageNumber() - 1) * pageable.getPageSize());
+        query.setMaxResults(pageable.getPageSize());
+
+        return new PageImpl<>(query.getResultList());
     }
 
     private List<Predicate> createPredicatesByParam(CriteriaBuilder cb, Root<Product> from, Product param) {
