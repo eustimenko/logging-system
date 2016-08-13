@@ -1,0 +1,3 @@
+rootProject.name = 'com.spring.web.demo'
+include 'persistent', 'logic', 'api'
+
