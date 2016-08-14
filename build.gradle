@@ -15,6 +15,9 @@ buildscript {
     dependencies {
         classpath 'io.spring.gradle:dependency-management-plugin:0.6.0.RELEASE'
         classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.4.0.RELEASE'
+        classpath 'org.liquibase:liquibase-gradle-plugin:1.2.1'
+        classpath 'org.postgresql:postgresql:9.4.1209.jre7'
+        classpath 'org.hsqldb:hsqldb:2.3.3'
     }
 }
 
@@ -37,12 +40,45 @@ subprojects {
 }
 
 project(':persistent') {
+    apply plugin: 'org.liquibase.gradle'
+
+    liquibase{
+        activities{
+            TEST {
+                File propsFile = new File("${projectDir}/src/test/resources/liquibase.properties")
+                Properties properties = new Properties()
+                properties.load(new FileInputStream(propsFile))
+
+                changeLogFile 'src/test/resources/liquibase/db.changelog-test.xml'
+                url properties['database.url']
+                username properties['database.username']
+                password properties['database.password']
+                classpath "$projectDir"
+            }
+
+            PROD {
+                File propsFile = new File("${projectDir}/src/main/resources/domain.properties")
+                Properties properties = new Properties()
+                properties.load(new FileInputStream(propsFile))
+
+                changeLogFile 'src/main/resources/liquibase/db.changelog-master.xml'
+                url properties['database.url']
+                username properties['database.username']
+                password properties['database.password']
+                classpath "$projectDir"
+            }
+        }
+
+        runList = 'PROD'
+    }
+
     dependencies {
         compile 'org.springframework:spring-context-support'
         compile 'org.springframework.data:spring-data-jpa'
         compile 'org.hibernate:hibernate-entitymanager'
         compile 'com.mchange:c3p0:0.9.5.2'
         compile 'org.hsqldb:hsqldb'
+        compile 'org.postgresql:postgresql:9.4.1209.jre7'
     }
 }
 
