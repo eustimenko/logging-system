@@ -1,10 +1,35 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<!doctype html>
+<html ng-app="app">
 <head>
-    <title>First Page</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <!-- Required meta tags -->
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+    <!-- Required third-party libs -->
+    <script type="text/javascript" src="webjars/angularjs/1.5.7/angular.min.js"></script>
+
+    <!-- Required own JS -->
+    <script type="text/javascript" src="/js/app.js"></script>
+    <script type="text/javascript" src="/js/controller/products.js"></script>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="webjars/bootstrap/3.3.7-1/css/bootstrap.min.css"/>
 </head>
+
 <body>
-Hi, this is my first landing page using server side templating by Thymeleaf
+<div ng-controller="productsController">
+    <table class="table">
+        <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>SKU</th>
+        </tr>
+        <tr ng-repeat="p in products">
+            <td>{{ p.id }}</td>
+            <td>{{ p.title }}</td>
+            <td>{{ p.sku }}</td>
+        </tr>
+    </table>
+</div>
 </body>
 </html>

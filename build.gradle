@@ -15,7 +15,9 @@ buildscript {
 
     dependencies {
         classpath 'io.spring.gradle:dependency-management-plugin:0.6.0.RELEASE'
+
         classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.4.0.RELEASE'
+
         classpath 'org.liquibase:liquibase-gradle-plugin:1.2.1'
         classpath 'org.postgresql:postgresql:9.4.1209.jre7'
         classpath 'org.hsqldb:hsqldb:2.3.3'
@@ -112,5 +114,9 @@ project(':web') {
     dependencies {
         compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
         compile 'org.springframework.boot:spring-boot-devtools'
+
+        compile 'org.webjars:angularjs:1.5.7'
+        compile 'org.webjars:jquery:3.1.0'
+        compile 'org.webjars:bootstrap:3.3.7-1'
     }
 }
