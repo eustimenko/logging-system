@@ -9,7 +9,8 @@ allprojects {
 
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
+        maven { url 'http://repo.spring.io/libs-snapshot' }
     }
 
     dependencies {
@@ -29,7 +30,8 @@ subprojects {
     targetCompatibility = 1.8
 
     repositories {
-        mavenCentral()
+        jcenter()
+        maven { url 'http://repo.spring.io/libs-snapshot' }
     }
 
     dependencyManagement {
@@ -91,16 +93,11 @@ project(':logic') {
 }
 
 project(':api') {
-    apply plugin: 'war'
-
-    war {
-        baseName 'api'
-    }
+    apply plugin: 'spring-boot'
 
     dependencies {
         compile project(':logic')
         compile 'org.springframework.boot:spring-boot-starter-web'
-        compile 'org.springframework:spring-boot-starter-actuator'
 
         testCompile 'org.springframework.boot:spring-boot-starter-test'
         testCompile 'junit:junit'
@@ -110,13 +107,10 @@ project(':api') {
 }
 
 project(':web') {
-    apply plugin: 'war'
-
-    war {
-        baseName 'web'
-    }
+    apply plugin: 'spring-boot'
 
     dependencies {
-        compile 'org.springframework.boot:spring-boot-starter-web'
+        compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
+        compile 'org.springframework.boot:spring-boot-devtools'
     }
 }
