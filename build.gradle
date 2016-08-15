@@ -51,7 +51,13 @@ subprojects {
                     'api.port'         : project.property('api.port')
             ]
         }
+    }
+}
 
+project(':persistent') {
+    apply plugin: 'org.liquibase.gradle'
+
+    processResources {
         filesMatching('domain.properties') {
             filter ReplaceTokens, tokens: [
                     'database.driver'  : project.property('database.driver'),
@@ -61,25 +67,9 @@ subprojects {
             ]
         }
     }
-}
-
-project(':persistent') {
-    apply plugin: 'org.liquibase.gradle'
 
     liquibase {
         activities {
-            TEST {
-                File propsFile = new File("${projectDir}/src/test/resources/liquibase.properties")
-                Properties properties = new Properties()
-                properties.load(new FileInputStream(propsFile))
-
-                changeLogFile 'src/test/resources/liquibase/db.changelog-test.xml'
-                url properties['database.url']
-                username properties['database.username']
-                password properties['database.password']
-                classpath "$projectDir"
-            }
-
             PROD {
                 changeLogFile 'src/main/resources/liquibase/db.changelog-master.xml'
                 url project.property('database.url')
@@ -96,7 +86,8 @@ project(':persistent') {
         compile 'org.springframework:spring-context-support'
         compile 'org.springframework.data:spring-data-jpa'
         compile 'org.hibernate:hibernate-entitymanager'
-        compile 'com.mchange:c3p0:0.9.5.2'
+        compile 'com.zaxxer:HikariCP'
+
         compile 'org.hsqldb:hsqldb'
         compile 'org.postgresql:postgresql:9.4.1209.jre7'
     }

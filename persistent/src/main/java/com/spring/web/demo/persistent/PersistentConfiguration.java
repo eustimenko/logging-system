@@ -1,6 +1,6 @@
 package com.spring.web.demo.persistent;
 
-import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.zaxxer.hikari.*;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -21,44 +21,39 @@ public class PersistentConfiguration {
 
     @Bean
     DataSource dataSource(Environment env) throws PropertyVetoException {
-        final ComboPooledDataSource dataSource = new ComboPooledDataSource();
-        dataSource.setDriverClass(env.getRequiredProperty("database.driver"));
-        dataSource.setJdbcUrl(env.getRequiredProperty("database.url"));
-        dataSource.setUser(env.getRequiredProperty("database.username"));
-        dataSource.setPassword(env.getRequiredProperty("database.password"));
+        final HikariConfig config = new HikariConfig();
+        config.setDriverClassName(env.getRequiredProperty("database.driver"));
+        config.setJdbcUrl(env.getRequiredProperty("database.url"));
+        config.setUsername(env.getRequiredProperty("database.username"));
+        config.setPassword(env.getRequiredProperty("database.password"));
 
-        dataSource.setInitialPoolSize(5);
-        dataSource.setMinPoolSize(5);
-        dataSource.setAcquireIncrement(5);
-        dataSource.setMaxPoolSize(20);
-        dataSource.setMaxStatements(100);
-
-        return dataSource;
+        return new HikariDataSource(config);
     }
 
     @Bean
     LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource, Environment env) {
+        final LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
+        factory.setDataSource(dataSource);
+        factory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+        factory.setPackagesToScan("com.spring.web.demo.persistent.entity");
+        factory.setJpaProperties(jpaProperties(env));
+
+        return factory;
+    }
+
+    private Properties jpaProperties(Environment env) {
         final Properties properties = new Properties();
         properties.put("hibernate.dialect", env.getRequiredProperty("hibernate.dialect"));
         properties.put("hibernate.hbm2ddl.auto", env.getRequiredProperty("hibernate.hbm2ddl.auto"));
         properties.put("hibernate.show_sql", env.getRequiredProperty("hibernate.show_sql"));
         properties.put("hibernate.format_sql", false);
 
-        final LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
-        factory.setDataSource(dataSource);
-        factory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        factory.setPackagesToScan("com.spring.web.demo.persistent.entity");
-        factory.setJpaProperties(properties);
-
-        return factory;
+        return properties;
     }
 
     @Bean
     JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
-        final JpaTransactionManager manager = new JpaTransactionManager();
-        manager.setEntityManagerFactory(entityManagerFactory);
-
-        return manager;
+        return new JpaTransactionManager(entityManagerFactory);
     }
 
 }
