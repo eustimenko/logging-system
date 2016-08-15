@@ -18,6 +18,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Ignore
 public class ProductControllerTest {
 
     @Autowired

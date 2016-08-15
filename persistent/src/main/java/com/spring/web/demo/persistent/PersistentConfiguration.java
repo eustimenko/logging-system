@@ -1,6 +1,7 @@
 package com.spring.web.demo.persistent;
 
 import com.zaxxer.hikari.*;
+import org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -47,6 +48,7 @@ public class PersistentConfiguration {
         properties.put("hibernate.hbm2ddl.auto", env.getRequiredProperty("hibernate.hbm2ddl.auto"));
         properties.put("hibernate.show_sql", env.getRequiredProperty("hibernate.show_sql"));
         properties.put("hibernate.format_sql", false);
+        properties.put("hibernate.physical_naming_strategy", PhysicalNamingStrategyStandardImpl.class.getName());
 
         return properties;
     }

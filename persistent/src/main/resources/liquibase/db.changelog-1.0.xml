@@ -20,6 +20,31 @@
         <addUniqueConstraint tableName="product" columnNames="sku" constraintName="unique_sku"/>
 
         <rollback>
+            <dropTable tableName="product" cascadeConstraints="true"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="15082016-1" author="ustimenko">
+        <createTable tableName="user">
+            <column name="id" type="BIGINT" autoIncrement="true" incrementBy="1">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="email" type="VARCHAR(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="login" type="VARCHAR(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fullname" type="VARCHAR(256)"/>
+            <column name="password" type="VARCHAR(256)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint tableName="user" columnNames="login" constraintName="unique_login"/>
+        <addUniqueConstraint tableName="user" columnNames="email" constraintName="unique_email"/>
+
+        <rollback>
             <dropTable tableName="user" cascadeConstraints="true"/>
         </rollback>
     </changeSet>

@@ -98,6 +98,12 @@ project(':logic') {
         compile project(':persistent')
         compile 'org.aspectj:aspectjweaver'
         compile 'org.mockito:mockito-core'
+
+        compile 'org.hibernate:hibernate-validator'
+        compile 'com.google.guava:guava:19.0'
+        compile 'org.passay:passay:1.0'
+
+        compile 'org.springframework.boot:spring-boot-starter-security'
     }
 }
 

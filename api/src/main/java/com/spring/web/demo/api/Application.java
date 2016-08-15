@@ -9,6 +9,7 @@ import com.spring.web.demo.persistent.PersistentConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
 import org.springframework.context.annotation.*;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.web.servlet.View;
@@ -17,7 +18,7 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import javax.servlet.Filter;
 import java.text.SimpleDateFormat;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 @Import({PersistentConfiguration.class, LogicConfiguration.class})
 @EnableSwagger
 public class Application {
@@ -61,7 +62,7 @@ public class Application {
                         null
                 ))
                 .useDefaultResponseMessages(false)
-                .includePatterns("/api.*");
+                .includePatterns("/api.*", "/auth.*");
     }
 
     public static void main(String[] args) {
