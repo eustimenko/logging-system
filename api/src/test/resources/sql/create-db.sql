@@ -1,0 +1,11 @@
+SET DATABASE SQL SYNTAX ORA TRUE;
+
+CREATE TABLE user(
+  id BIGINT IDENTITY PRIMARY KEY,
+  fullname VARCHAR(255),
+  login VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  CONSTRAINT unique_login UNIQUE (login),
+  CONSTRAINT unique_email UNIQUE (email)
+);

@@ -1,12 +1,17 @@
 package com.spring.web.demo.logic.dto;
 
 import com.spring.web.demo.logic.validate.*;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.NotNull;
 
 @PasswordMatches
 public class UserDto {
 
     @ValidEmail
     private String email;
+    @NotNull
+    @NotEmpty
     private String login;
     @ValidPassword
     private String password;
