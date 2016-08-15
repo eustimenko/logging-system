@@ -1,3 +1,5 @@
+import org.apache.tools.ant.filters.*
+
 allprojects {
     group = 'com.spring.web.demo'
     version = '1.0'
@@ -41,13 +43,31 @@ subprojects {
             mavenBom 'org.springframework.boot:spring-boot-starter-parent:1.4.0.RELEASE'
         }
     }
+
+    processResources {
+        filesMatching('application.properties') {
+            filter ReplaceTokens, tokens: [
+                    'web.port'         : project.property('web.port'),
+                    'api.port'         : project.property('api.port')
+            ]
+        }
+
+        filesMatching('domain.properties') {
+            filter ReplaceTokens, tokens: [
+                    'database.driver'  : project.property('database.driver'),
+                    'database.url'     : project.property('database.url'),
+                    'database.username': project.property('database.username'),
+                    'database.password': project.property('database.password')
+            ]
+        }
+    }
 }
 
 project(':persistent') {
     apply plugin: 'org.liquibase.gradle'
 
-    liquibase{
-        activities{
+    liquibase {
+        activities {
             TEST {
                 File propsFile = new File("${projectDir}/src/test/resources/liquibase.properties")
                 Properties properties = new Properties()
@@ -61,14 +81,10 @@ project(':persistent') {
             }
 
             PROD {
-                File propsFile = new File("${projectDir}/src/main/resources/domain.properties")
-                Properties properties = new Properties()
-                properties.load(new FileInputStream(propsFile))
-
                 changeLogFile 'src/main/resources/liquibase/db.changelog-master.xml'
-                url properties['database.url']
-                username properties['database.username']
-                password properties['database.password']
+                url project.property('database.url')
+                username project.property('database.username')
+                password project.property('database.password')
                 classpath "$projectDir"
             }
         }
