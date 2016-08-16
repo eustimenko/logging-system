@@ -18,6 +18,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = {ApiTestConfiguration.class, Application.class})
+@Ignore
 public class AuthControllerTest {
 
     @Autowired

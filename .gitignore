@@ -23,3 +23,6 @@ gradlew.bat
 */.gradle
 */build
 .gradletasknamecache
+
+# Web
+/web/node_modules

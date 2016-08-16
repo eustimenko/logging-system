@@ -1,0 +1,34 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "description": "Demo NodeJs Web Application as web module.",
+  "main": "main.js",
+  "scripts": {
+    "pretest": "npm run lint -s",
+    "test": "echo '=> testing' && mocha test/",
+    "lint": "echo '=> linting' && jshint assets/scripts/*.js",
+    "minify:js": "echo '=> minify:js' && uglifyjs assets/scripts/main.js -o dist/public/js/main.min.js",
+    "minify:css": "echo '=> minify:css' && cleancss assets/css/main.css -o dist/public/css/main.min.css",
+    "watch": "watch 'npm run minify:js && npm run minify:css' assets/scripts/ assets/css/",
+    "build": "echo '=> building' && npm run test -s && npm run minify:js -s && npm run minify:css -s",
+    "build:less": "",
+    "deploy": "http-server dist/public/"
+  },
+  "author": "Eugene Ustimenko",
+  "license": "ISC",
+  "dependencies": {
+    "uglify-js": "2.7.x",
+    "clean-css": "3.4.x",
+    "watch": "0.19.x",
+    "http-server": "0.9.x",
+    "browserify": "13.1.x",
+    "react": "15.3.x"
+  },
+  "devDependencies": {
+    "mocha": "3.0.x",
+    "jshint": "2.9.x",
+    "should": "11.1.x",
+    "less": "2.7.x"
+  }
+}
+

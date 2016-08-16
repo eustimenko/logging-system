@@ -1,3 +1,9 @@
+pluginRepositories {
+    maven { url 'http://repo.spring.io/libs-snapshot' }
+    maven { url 'http://jcenter.bintray.com' }
+    gradlePluginPortal()
+}
+
 rootProject.name = 'com.spring.web.demo'
 include 'persistent', 'logic', 'api', 'web'
 
