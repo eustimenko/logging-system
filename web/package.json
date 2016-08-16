@@ -11,7 +11,6 @@
     "minify:css": "echo '=> minify:css' && cleancss assets/css/main.css -o dist/public/css/main.min.css",
     "watch": "watch 'npm run minify:js && npm run minify:css' assets/scripts/ assets/css/",
     "build": "echo '=> building' && npm run test -s && npm run minify:js -s && npm run minify:css -s",
-    "build:less": "",
     "deploy": "http-server dist/public/"
   },
   "author": "Eugene Ustimenko",
@@ -22,7 +21,10 @@
     "watch": "0.19.x",
     "http-server": "0.9.x",
     "browserify": "13.1.x",
-    "react": "15.3.x"
+    "react": "15.3.x",
+    "react-dom": "15.3.x",
+    "bootstrap": "3.3.x",
+    "jquery": "3.1.x"
   },
   "devDependencies": {
     "mocha": "3.0.x",

@@ -25,4 +25,5 @@ gradlew.bat
 .gradletasknamecache
 
 # Web
+/web/assets
 /web/node_modules
