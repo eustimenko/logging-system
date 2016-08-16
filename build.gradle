@@ -85,10 +85,16 @@ project(':persistent') {
         compile 'org.springframework:spring-context-support'
         compile 'org.springframework.data:spring-data-jpa'
         compile 'org.hibernate:hibernate-entitymanager'
+        compile 'org.hibernate:hibernate-ehcache'
+
         compile 'com.zaxxer:HikariCP'
+        compile 'io.dropwizard.metrics:metrics-core:3.1.2'
+        compile 'io.dropwizard.metrics:metrics-healthchecks:3.1.2'
 
         compile 'org.hsqldb:hsqldb'
         compile 'org.postgresql:postgresql:9.4.1209.jre7'
+
+        compile 'com.fasterxml.jackson.core:jackson-annotations'
     }
 }
 

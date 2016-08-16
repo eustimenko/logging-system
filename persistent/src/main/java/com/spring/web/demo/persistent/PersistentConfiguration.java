@@ -27,6 +27,7 @@ public class PersistentConfiguration {
         config.setJdbcUrl(env.getRequiredProperty("database.url"));
         config.setUsername(env.getRequiredProperty("database.username"));
         config.setPassword(env.getRequiredProperty("database.password"));
+        config.setMaximumPoolSize(50);
 
         return new HikariDataSource(config);
     }
@@ -49,6 +50,10 @@ public class PersistentConfiguration {
         properties.put("hibernate.show_sql", env.getRequiredProperty("hibernate.show_sql"));
         properties.put("hibernate.format_sql", false);
         properties.put("hibernate.physical_naming_strategy", PhysicalNamingStrategyStandardImpl.class.getName());
+        properties.put("hibernate.generate_statistics", true);
+        properties.put("hibernate.cache.use_second_level_cache", true);
+        properties.put("hibernate.cache.use_query_cache", true);
+        properties.put("hibernate.cache.region.factory_class", "org.hibernate.cache.ehcache.EhCacheRegionFactory");
 
         return properties;
     }

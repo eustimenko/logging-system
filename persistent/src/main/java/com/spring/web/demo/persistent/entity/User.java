@@ -1,12 +1,16 @@
 package com.spring.web.demo.persistent.entity;
 
-import javax.persistence.Entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 
 @Entity
+@Cacheable
 public class User extends Base {
 
     private String email;
     private String login;
+    @JsonIgnore
     private String password;
     private String fullname;
 

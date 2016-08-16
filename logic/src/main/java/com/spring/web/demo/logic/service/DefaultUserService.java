@@ -56,7 +56,7 @@ public class DefaultUserService implements UserService {
         return repository.findByLogin(login).isPresent();
     }
 
-    public User update(Long id, UserDto params) throws NoSuchElementException, EmailExistsException, LoginExistsException {
+    public User update(Long id, User params) throws NoSuchElementException, EmailExistsException, LoginExistsException {
         final String email = params.getEmail();
         final String login = params.getLogin();
 
@@ -66,7 +66,7 @@ public class DefaultUserService implements UserService {
         return update(get(id), params);
     }
 
-    private User update(User user, UserDto params) {
+    private User update(User user, User params) {
         user.setFullname(params.getFullname());
         user.setLogin(params.getLogin());
         user.setEmail(params.getEmail());
@@ -76,6 +76,17 @@ public class DefaultUserService implements UserService {
 
     public void delete(Long id) throws NoSuchElementException {
         repository.delete(get(id));
+    }
+
+    public void delete(Set<Long> ids) {
+        final List<User> users = new ArrayList<>(ids.size());
+        ids.forEach(id -> {
+            final Optional<User> user = repository.findById(id);
+            if (user.isPresent()) {
+                users.add(user.get());
+            }
+        });
+        repository.delete(users);
     }
 
     public User findById(Long id) throws NoSuchElementException {

@@ -1,6 +1,5 @@
 package com.spring.web.demo.api.controller;
 
-import com.spring.web.demo.logic.dto.UserDto;
 import com.spring.web.demo.logic.exception.*;
 import com.spring.web.demo.logic.service.UserService;
 import com.spring.web.demo.persistent.entity.User;
@@ -30,7 +29,7 @@ public class RootController {
     @ApiOperation(value = "Update existing user", notes = "Update existing user by id and json")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "")})
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-    public User update(@PathVariable("id") Long id, @RequestBody UserDto params) throws NoSuchElementException, EmailExistsException, LoginExistsException {
+    public User update(@PathVariable("id") Long id, @RequestBody User params) throws NoSuchElementException, EmailExistsException, LoginExistsException {
         return userService.update(id, params);
     }
 
@@ -39,5 +38,12 @@ public class RootController {
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     public void delete(@PathVariable("id") Long id) throws NoSuchElementException {
         userService.delete(id);
+    }
+
+    @ApiOperation(value = "Delete users", notes = "Delete users by their ids")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "")})
+    @RequestMapping(method = RequestMethod.DELETE)
+    public void delete(@RequestBody Set<Long> ids) {
+        userService.delete(ids);
     }
 }
