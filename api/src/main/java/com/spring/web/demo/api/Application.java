@@ -19,50 +19,19 @@ import javax.servlet.Filter;
 import java.text.SimpleDateFormat;
 
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
-@Import({PersistentConfiguration.class, LogicConfiguration.class})
-@EnableSwagger
+@Import(
+        {
+                PersistentConfiguration.class,
+                LogicConfiguration.class,
+                SwaggerConfiguration.class,
+                JacksonConfiguration.class
+        }
+)
 public class Application {
-
-    @Bean
-    public View jsonTemplate() {
-        final MappingJackson2JsonView view = new MappingJackson2JsonView();
-        view.setPrettyPrint(true);
-        return view;
-    }
-
-    @Bean
-    public Jackson2ObjectMapperBuilder jacksonBuilder() {
-        final Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
-        builder.indentOutput(true);
-        builder.dateFormat(new SimpleDateFormat("yyyy-MM-dd"));
-        return builder;
-    }
 
     @Bean
     public Filter authFilter() {
         return new AuthFilter();
-    }
-
-    private SpringSwaggerConfig springSwaggerConfig;
-
-    @Autowired
-    public void setSpringSwaggerConfig(SpringSwaggerConfig springSwaggerConfig) {
-        this.springSwaggerConfig = springSwaggerConfig;
-    }
-
-    @Bean
-    public SwaggerSpringMvcPlugin customImplementation() {
-        return new SwaggerSpringMvcPlugin(this.springSwaggerConfig)
-                .apiInfo(new ApiInfo(
-                        "StoreLog rest API",
-                        "This app is for education, training purpose. It represents model of wide product storage.",
-                        null,
-                        null,
-                        null,
-                        null
-                ))
-                .useDefaultResponseMessages(false)
-                .includePatterns("/api.*", "/auth.*");
     }
 
     public static void main(String[] args) {

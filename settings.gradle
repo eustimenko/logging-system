@@ -5,5 +5,5 @@ pluginRepositories {
 }
 
 rootProject.name = 'com.spring.web.demo'
-include 'persistent', 'logic', 'api', 'web'
+include 'persistent', 'logic', 'api'
 

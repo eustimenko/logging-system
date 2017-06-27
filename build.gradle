@@ -7,7 +7,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.4.0.RELEASE'
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.5.4.RELEASE'
 
         classpath 'org.liquibase:liquibase-gradle-plugin:1.2.1'
         classpath 'org.postgresql:postgresql:9.4.1209.jre7'
@@ -15,7 +15,6 @@ buildscript {
 }
 
 plugins {
-    id "com.moowork.node" version "0.13"
     id "io.spring.dependency-management" version "0.6.0.RELEASE"
 }
 
@@ -42,7 +41,7 @@ subprojects {
 
     dependencyManagement {
         imports {
-            mavenBom 'org.springframework.boot:spring-boot-starter-parent:1.4.0.RELEASE'
+            mavenBom 'org.springframework.boot:spring-boot-starter-parent:1.5.4.RELEASE'
         }
     }
 
@@ -90,6 +89,7 @@ project(':persistent') {
 
         compile 'org.hibernate:hibernate-entitymanager'
         compile 'org.hibernate:hibernate-ehcache'
+        compile 'org.hibernate:hibernate-java8'
         compile 'com.zaxxer:HikariCP'
 
         compile 'org.hsqldb:hsqldb'
@@ -124,28 +124,5 @@ project(':api') {
         testCompile 'junit:junit'
 
         compile 'com.mangofactory:swagger-springmvc:1.0.2'
-    }
-}
-
-project(':web') {
-    node {
-        // Version of node to use.
-        version = '4.2.3'
-
-        // Version of npm to use.
-        npmVersion = '2.14.7'
-
-        // Base URL for fetching node distributions (change if you have a mirror).
-        distBaseUrl = 'https://nodejs.org/dist'
-
-        // If true, it will download node using above parameters.
-        // If false, it will try to use globally installed node.
-        download = true
-
-        // Set the work directory for unpacking node
-        workDir = file("${project.buildDir}/nodejs")
-
-        // Set the work directory where node_modules should be located
-        nodeModulesDir = file("${project.projectDir}")
     }
 }
